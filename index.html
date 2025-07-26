@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mini Cart Shop</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+    li {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const users = ["Moe", "Kol", "Tay", "Pu"];
+    const passwords = ["uglyduck", "chicken", "fiesta", "scissor"];
+
+    const items = [
+      { name: "Nike Shoes", price: 300 },
+      { name: "Nike Shirt", price: 150 },
+      { name: "Red USB", price: 20 }
+    ];
+
+    function MiniCartShop() {
+      const [username, setUsername] = React.useState("");
+      const [password, setPassword] = React.useState("");
+      const [cartItems, setCartItems] = React.useState([]);
+      const [totalPrice, setTotalPrice] = React.useState(0);
+      const [loggedIn, setLoggedIn] = React.useState(false);
+
+      function handleLogin(e) {
+        e.preventDefault();
+        const userIndex = users.indexOf(username);
+        if (userIndex !== -1 && passwords[userIndex] === password) {
+          alert(`Welcome, ${username}!`);
+          setLoggedIn(true);
+        } else {
+          alert("OPPS YOU ARE NOT A MEMBER OF THIS CARTSHOP");
+        }
+      }
+
+      function addToCart(item) {
+        setCartItems((prev) => [...prev, item]);
+        setTotalPrice((prev) => prev + item.price);
+      }
+
+      return (
+        <div>
+          {loggedIn ? (
+            <div>
+              <h1>Welcome, {username}!</h1>
+              <h2>🛒 Items for Sale</h2>
+              <ul>
+                {items.map((item, index) => (
+                  <li key={index}>
+                    {item.name} - ₱{item.price}
+                    <button onClick={() => addToCart(item)}>Add to Cart</button>
+                  </li>
+                ))}
+              </ul>
+              <h2>🛍️ Your Cart</h2>
+              <ul>
+                {cartItems.map((item, index) => (
+                  <li key={index}>
+                    {item.name} - ₱{item.price}
+                  </li>
+                ))}
+              </ul>
+              <h3>Total: ₱{totalPrice}</h3>
+            </div>
+          ) : (
+            <form onSubmit={handleLogin}>
+              <label>
+                Username:
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </label>
+              <br /><br />
+              <label>
+                Password:
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </label>
+              <br /><br />
+              <button type="submit">Login</button>
+            </form>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.render(<MiniCartShop />, document.getElementById("root"));
+  </script>
+</body>
+</html>
