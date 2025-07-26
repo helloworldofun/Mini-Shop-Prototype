@@ -1,2 +1,2 @@
-# Mini-Shop-Prototype
+# Mini-Shopper-Prototype
 React-based Mini Cart Shopping project
